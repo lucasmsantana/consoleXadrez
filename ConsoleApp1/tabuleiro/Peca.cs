@@ -15,12 +15,18 @@ namespace ConsoleApp1.tabuleiro
             this.posicao = null;
             this.cor = cor;
             this.tab = tab;
+            this.qteMovimentos = 0;
         }
 
         public Peca(Tabuleiro tab, Cor cor)
         {
             this.tab = tab;
             this.cor = cor;
+        }
+
+        public void incrementarQteMovimentos()
+        {
+            qteMovimentos++;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ConsoleApp1.tabuleiro;
 using System;
+using tabuleiro;
 
 namespace ConsoleApp1
 {

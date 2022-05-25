@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ConsoleApp1.tabuleiro;
+using System;
 using tabuleiro;
+using xadrez;
 
-namespace ConsoleApp1.tabuleiro
+namespace tabuleiro
 {
     internal class Tabuleiro
     {
@@ -35,6 +37,11 @@ namespace ConsoleApp1.tabuleiro
             return true;
         }
 
+        internal void colocarPeca(Torre torre, PosicaoXadrez posicaoXadrez)
+        {
+            throw new NotImplementedException();
+        }
+
         public void validarPosicao(Posicao pos)
         {
             if (!posicaoValida(pos))
@@ -57,5 +64,18 @@ namespace ConsoleApp1.tabuleiro
             pecas[pos.linha, pos.coluna] = p;
             p.posicao = pos;
         }
+
+        public Peca retirarPeca(Posicao pos)
+        {
+            if (peca(pos) == null)
+            {
+                return null;
+            }
+            Peca aux = peca(pos);
+            aux.posicao = null;
+            pecas[pos.linha, pos.coluna] = null;
+            return aux;
+        }
+
     }
 }
