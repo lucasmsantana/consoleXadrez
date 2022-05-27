@@ -2,7 +2,7 @@
 using tabuleiro;
 namespace ConsoleApp1.tabuleiro
 {
-    internal class Peca
+    internal abstract class Peca
     {
 
         public Posicao posicao { get; set; }
@@ -24,6 +24,7 @@ namespace ConsoleApp1.tabuleiro
             this.cor = cor;
         }
 
+        public abstract bool[,] movimentosPossiveis();
         public void incrementarQteMovimentos()
         {
             qteMovimentos++;
