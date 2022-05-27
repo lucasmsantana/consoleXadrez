@@ -50,11 +50,9 @@ namespace ConsoleApp1
         public static PosicaoXadrez lerPosicaoXadrez()
         {
             string s = Console.ReadLine();
-            char coluna = s[1];
-            int linha = int.Parse(s[0] + "");
+            char coluna = s[0];
+            int linha = int.Parse(s[1] + "");
             return new PosicaoXadrez(coluna, linha);
-            
-
         }
         public static void imprimirPeca(Peca peca)
         {

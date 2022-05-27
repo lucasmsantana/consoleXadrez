@@ -19,11 +19,13 @@ namespace ConsoleApp1
                     Console.Clear();
                     Tela.imprimirTabuleiro(partida.tab);
                     Console.WriteLine();
+                    Console.WriteLine("Turno: " + partida.turno);
+                    Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
                     Console.Write("Origem: ");
                     Posicao origem = Tela.lerPosicaoXadrez().toPosicao();
-                    Console.Write("Destino");
+                    Console.Write("Destino: ");
                     Posicao destino = Tela.lerPosicaoXadrez().toPosicao();
-                    partida.executaMovimento(origem, destino);  
+                    partida.realizaJogada(origem, destino);  
 
                         
                 }

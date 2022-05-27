@@ -26,6 +26,25 @@ namespace ConsoleApp1.xadrez
             Peca pecaCapturada = tab.retirarPeca(destino);
             tab.colocarPeca(p, destino);
         }
+
+        public void realizaJogada(Posicao origem, Posicao destino)
+        {
+            executaMovimento(origem, destino);
+            turno++;
+            mudaJogador();
+        }
+
+        private void mudaJogador()
+        {
+            if (jogadorAtual == Cor.Branca)
+            {
+                jogadorAtual = Cor.Preta;
+            }
+            else
+            {
+                jogadorAtual = Cor.Branca;
+            }
+        }
         private void colocarPecas(){
             tab.colocarPeca(new Torre(tab, Cor.Branca), new PosicaoXadrez('c', 1).toPosicao());
             tab.colocarPeca(new Torre(tab, Cor.Branca), new PosicaoXadrez('c', 2).toPosicao());
