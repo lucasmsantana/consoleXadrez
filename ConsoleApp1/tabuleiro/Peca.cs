@@ -29,6 +29,10 @@ namespace ConsoleApp1.tabuleiro
         {
             qteMovimentos++;
         }
+        public void decrementarQteMovimentos()
+        {
+            qteMovimentos--;
+        }
 
         public bool podeMoverPara(Posicao pos)
         {
