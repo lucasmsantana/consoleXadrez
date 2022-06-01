@@ -1,5 +1,4 @@
 ﻿using ConsoleApp1.tabuleiro;
-using ConsoleApp1.xadrez;
 using tabuleiro;
 
 namespace xadrez

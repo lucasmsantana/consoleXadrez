@@ -1,13 +1,12 @@
 ﻿using ConsoleApp1.tabuleiro;
-using System;
-using tabuleiro;
-using xadrez;
 using System.Collections.Generic;
+using tabuleiro;
 
-namespace ConsoleApp1.xadrez
+namespace xadrez
 {
-    internal class PartidaDeXadrez
+    class PartidaDeXadrez
     {
+
         public Tabuleiro tab { get; private set; }
         public int turno { get; private set; }
         public Cor jogadorAtual { get; private set; }
@@ -22,11 +21,14 @@ namespace ConsoleApp1.xadrez
             tab = new Tabuleiro(8, 8);
             turno = 1;
             jogadorAtual = Cor.Branca;
-            xeque = false;  
-            colocarPecas();
+            terminada = false;
+            xeque = false;
+            vulneravelEnPassant = null;
             pecas = new HashSet<Peca>();
             capturadas = new HashSet<Peca>();
+            colocarPecas();
         }
+
         public Peca executaMovimento(Posicao origem, Posicao destino)
         {
             Peca p = tab.retirarPeca(origem);
@@ -135,10 +137,27 @@ namespace ConsoleApp1.xadrez
         {
             Peca pecaCapturada = executaMovimento(origem, destino);
 
-            if (estaEmXeque(jogadorAtual)) {
+            if (estaEmXeque(jogadorAtual))
+            {
                 desfazMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
             }
+
+            Peca p = tab.peca(destino);
+
+            // #jogadaespecial promocao
+            if (p is Peao)
+            {
+                if ((p.cor == Cor.Branca && destino.linha == 0) || (p.cor == Cor.Preta && destino.linha == 7))
+                {
+                    p = tab.retirarPeca(destino);
+                    pecas.Remove(p);
+                    Peca dama = new Dama(tab, p.cor);
+                    tab.colocarPeca(dama, destino);
+                    pecas.Add(dama);
+                }
+            }
+
             if (estaEmXeque(adversaria(jogadorAtual)))
             {
                 xeque = true;
@@ -147,16 +166,27 @@ namespace ConsoleApp1.xadrez
             {
                 xeque = false;
             }
+
             if (testeXequemate(adversaria(jogadorAtual)))
             {
                 terminada = true;
             }
-            else {
+            else
+            {
                 turno++;
                 mudaJogador();
             }
 
-            
+            // #jogadaespecial en passant
+            if (p is Peao && (destino.linha == origem.linha - 2 || destino.linha == origem.linha + 2))
+            {
+                vulneravelEnPassant = p;
+            }
+            else
+            {
+                vulneravelEnPassant = null;
+            }
+
         }
 
         public void validarPosicaoDeOrigem(Posicao pos)
@@ -194,6 +224,7 @@ namespace ConsoleApp1.xadrez
                 jogadorAtual = Cor.Branca;
             }
         }
+
         public HashSet<Peca> pecasCapturadas(Cor cor)
         {
             HashSet<Peca> aux = new HashSet<Peca>();
@@ -206,6 +237,7 @@ namespace ConsoleApp1.xadrez
             }
             return aux;
         }
+
         public HashSet<Peca> pecasEmJogo(Cor cor)
         {
             HashSet<Peca> aux = new HashSet<Peca>();
@@ -218,12 +250,6 @@ namespace ConsoleApp1.xadrez
             }
             aux.ExceptWith(pecasCapturadas(cor));
             return aux;
-        }
-
-        public void colocarNovaPeca(char coluna, int linha, Peca peca)
-        {
-            tab.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
-            pecas.Add(peca);
         }
 
         private Cor adversaria(Cor cor)
@@ -267,6 +293,7 @@ namespace ConsoleApp1.xadrez
             }
             return false;
         }
+
         public bool testeXequemate(Cor cor)
         {
             if (!estaEmXeque(cor))
@@ -296,6 +323,12 @@ namespace ConsoleApp1.xadrez
                 }
             }
             return true;
+        }
+
+        public void colocarNovaPeca(char coluna, int linha, Peca peca)
+        {
+            tab.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
+            pecas.Add(peca);
         }
 
         private void colocarPecas()
@@ -336,4 +369,3 @@ namespace ConsoleApp1.xadrez
         }
     }
 }
-
